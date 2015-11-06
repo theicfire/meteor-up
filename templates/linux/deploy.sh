@@ -131,10 +131,13 @@ wait-for-mongo ${MONGO_URL} 300000
 sudo stop <%= appName %> || :
 sudo start <%= appName %> || :
 
-echo "Waiting for <%= deployCheckWaitTime %> seconds while app is booting up"
-sleep <%= deployCheckWaitTime %>
+echo "Wait for app to boot up"
+start=$SECONDS
+while [ $(( SECONDS - start)) -lt <%=deployCheckWaitTime %> ]; do
+curl localhost:${PORT} && break
+done
 
-echo "Checking is app booted or not?"
+echo "Check if app has booted up"
 curl localhost:${PORT} || revert_app
 
 # chown to support dumping heapdump and etc
