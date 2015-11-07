@@ -135,6 +135,7 @@ echo "Wait for app to boot up"
 start=$SECONDS
 while [ $(( SECONDS - start)) -lt <%=deployCheckWaitTime %> ]; do
 curl localhost:${PORT} && break
+sleep 1
 done
 
 echo "Check if app has booted up"
